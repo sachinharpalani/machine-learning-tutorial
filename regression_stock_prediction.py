@@ -1,6 +1,7 @@
+import os
 import pandas as pd
 import quandl, math
-quandl.ApiConfig.api_key = '4nzF9RrKcGRT-qrVTMDP'
+quandl.ApiConfig.api_key = os.environ.get('QUANDL_API_KEY')
 import numpy as np
 from sklearn import preprocessing, model_selection, svm
 from sklearn.linear_model import LinearRegression
