@@ -7,6 +7,7 @@ from sklearn import preprocessing, model_selection, svm
 from sklearn.linear_model import LinearRegression
 import matplotlib.pyplot as plt
 from matplotlib import style
+import pickle
 
 style.use('ggplot')
 
@@ -33,12 +34,20 @@ X = X[:-forecast_out]
 
 df.dropna(inplace=True)
 y = np.array(df['label'])
-y = np.array(df['label'])
 X_train, X_test, y_train, y_test = model_selection.train_test_split(X,y,test_size=0.2)
 
 clf = LinearRegression()
 #clf = svm.SVR()
 clf.fit(X_train,y_train)
+
+#Used to save classifier in file
+# with open('linearregression.pickle','wb') as f:
+#     pickle.dump(clf,f)
+
+#Reads classifier from file
+pickle_in = open('linearregression.pickle','rb')
+clf = pickle.load(pickle_in)
+
 accuracy = clf.score(X_test,y_test)
 forecast_set = clf.predict(X_lately)
 print(forecast_set, accuracy, forecast_out)
@@ -54,9 +63,9 @@ for i in forecast_set:
     next_unix += one_day
     df.loc[next_date] = [np.nan for _ in range(len(df.columns)-1)] + [i]
 
-df['adj. close'].plot()
-df['forecast'].plot()
+df['Adj. Close'].plot()
+df['Forecast'].plot()
 plt.legend(loc=4)
-plt.xlabel('date')
-plt.ylabel('price')
+plt.xlabel('Date')
+plt.ylabel('Price')
 plt.show()
