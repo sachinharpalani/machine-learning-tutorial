@@ -21,8 +21,8 @@ df = df[['Adj. Close','HL_PCT','PCT_change','Adj. Volume']]
 forecast_col = 'Adj. Close'
 df.fillna(-99999, inplace=True)
 
-forecast_out = int(math.ceil(0.01*len(df)))
-print(forecast_out)
+forecast_out = int(math.ceil(0.1*len(df)))
+#print(forecast_out)
 
 df['label'] = df[forecast_col].shift(-forecast_out)
 
@@ -50,7 +50,7 @@ clf = pickle.load(pickle_in)
 
 accuracy = clf.score(X_test,y_test)
 forecast_set = clf.predict(X_lately)
-print(forecast_set, accuracy, forecast_out)
+#print(forecast_set, accuracy, forecast_out)
 df['Forecast'] = np.nan
 
 last_date = df.iloc[-1].name
