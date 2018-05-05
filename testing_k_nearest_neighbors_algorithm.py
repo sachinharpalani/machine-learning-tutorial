@@ -17,7 +17,8 @@ def k_nearest_neighbors(data,predict,k=3):
             distances.append([euclidean_distance,group])
     votes = [i[1] for i in sorted(distances)[:k]]
     vote_result = Counter(votes).most_common(1)[0][0]
-    return vote_result
+    confidence = Counter(votes).most_common(1)[0][1] / k
+    return vote_result, confidence
 
 df = pd.read_csv('breast-cancer-wisconsin.data')
 df.replace('?',-99999,inplace=True)
@@ -43,9 +44,11 @@ total = 0
 
 for group in test_set:
     for data in test_set[group]:
-        vote = k_nearest_neighbors(train_set,data,k=5)
+        vote, confidence = k_nearest_neighbors(train_set,data,k=5)
         if group == vote:
             correct+=1
+        else:
+            print(confidence)
         total+=1
 
 print('Accuracy:', correct/total)
